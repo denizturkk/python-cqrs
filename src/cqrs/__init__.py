@@ -16,7 +16,10 @@ from cqrs.producer import EventProducer
 from cqrs.requests import RequestMap
 from cqrs.requests.request import Request
 from cqrs.requests.request_handler import RequestHandler, SyncRequestHandler
+from cqrs.requests.stream_command import StreamCommand
+from cqrs.requests.stream_command_handler import StreamCommandHandler
 from cqrs.response import Response
+from cqrs.stream_response import StreamResponse
 
 __all__ = (
     "RequestMediator",
@@ -34,6 +37,9 @@ __all__ = (
     "RequestMap",
     "SyncRequestHandler",
     "Response",
+    "StreamCommand",
+    "StreamCommandHandler",
+    "StreamResponse",
     "OutboxedEventRepository",
     "SqlAlchemyOutboxedEventRepository",
     "EventProducer",
