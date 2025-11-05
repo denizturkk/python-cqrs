@@ -98,6 +98,42 @@ class ReadMeetingQueryHandler(RequestHandler[ReadMeetingQuery, ReadMeetingQueryR
 A complete example can be found in
 the [documentation](https://github.com/vadikko2/cqrs/blob/master/examples/request_handler.py)
 
+### Stream Command Handler
+
+Stream Command Handler is designed for operations that need to return data in chunks, such as Server-Sent Events (SSE)
+or other streaming protocols. Instead of returning a single response, it yields multiple `StreamResponse` objects.
+
+> [!TIP]
+> Stream handlers are ideal for long-running operations, real-time data feeds, or progressive data generation.
+
+```python
+from cqrs.requests.stream_command_handler import StreamCommandHandler
+from cqrs.requests.stream_command import StreamCommand
+from cqrs.stream_response import StreamResponse
+from cqrs.events.event import Event
+import typing
+
+class GenerateReportStreamHandler(
+    StreamCommandHandler[GenerateReportCommand, ReportChunkResponse]
+):
+    def __init__(self, report_service: ReportServiceProtocol) -> None:
+        self._report_service = report_service
+        self._events: list[Event] = []
+
+    @property
+    def events(self) -> typing.List[Event]:
+        return self._events
+
+    async def handle(
+        self, request: GenerateReportCommand
+    ) -> typing.AsyncIterator[ReportChunkResponse]:
+        async for chunk in self._report_service.generate_report(request.report_id):
+            yield ReportChunkResponse(data=chunk)
+```
+
+A complete example can be found in
+the [documentation](https://github.com/vadikko2/cqrs/blob/master/examples/stream_command_handler.py)
+
 ## Event Handlers
 
 Event handlers are designed to process `Notification` and `ECST` events that are consumed from the broker.
