@@ -57,5 +57,3 @@ class StreamCommandHandler(abc.ABC, typing.Generic[_StreamCmd, _StreamResp]):
             Stream responses representing chunks of data
         """
         raise NotImplementedError
-        # Make this method a generator to satisfy the type checker
-        yield  # type: ignore

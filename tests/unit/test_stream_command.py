@@ -7,14 +7,9 @@ from uuid import UUID, uuid4
 import pydantic
 import pytest
 
-# Direct imports to avoid dependency issues
-import sys
-sys.path.insert(0, '/home/runner/work/python-cqrs/python-cqrs/src')
-
-from cqrs.requests.stream_command import StreamCommand
-from cqrs.requests.stream_command_handler import StreamCommandHandler
-from cqrs.stream_response import StreamResponse
-from cqrs.events.event import Event
+import cqrs
+from cqrs import StreamCommand, StreamCommandHandler, StreamResponse
+from cqrs.events import Event
 
 
 class GenerateReportCommand(StreamCommand):

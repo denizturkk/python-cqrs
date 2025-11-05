@@ -107,21 +107,18 @@ or other streaming protocols. Instead of returning a single response, it yields 
 > Stream handlers are ideal for long-running operations, real-time data feeds, or progressive data generation.
 
 ```python
-from cqrs.requests.stream_command_handler import StreamCommandHandler
-from cqrs.requests.stream_command import StreamCommand
-from cqrs.stream_response import StreamResponse
-from cqrs.events.event import Event
 import typing
+import cqrs
 
 class GenerateReportStreamHandler(
-    StreamCommandHandler[GenerateReportCommand, ReportChunkResponse]
+    cqrs.StreamCommandHandler[GenerateReportCommand, ReportChunkResponse]
 ):
     def __init__(self, report_service: ReportServiceProtocol) -> None:
         self._report_service = report_service
-        self._events: list[Event] = []
+        self._events: list[cqrs.Event] = []
 
     @property
-    def events(self) -> typing.List[Event]:
+    def events(self) -> typing.List[cqrs.Event]:
         return self._events
 
     async def handle(
